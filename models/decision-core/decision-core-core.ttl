@@ -1,0 +1,312 @@
+@prefix : <https://example.com/decision-core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+:DecisionCoreOntology a owl:Ontology ;
+    rdfs:label "Decision Core Ontology" ;
+    rdfs:comment "Core ontology for policy-driven decision assurance, validation, evidence, provenance, and governance." ;
+    owl:versionInfo "0.2.0" ;
+    dct:created "2026-04-06"^^xsd:date ;
+    dct:description "Defines the central concepts and properties for decision assurance and traceable execution discipline." .
+
+:Policy a owl:Class ;
+    rdfs:label "Policy" ;
+    rdfs:comment "A governing intent or rule that drives requirements." .
+
+:Requirement a owl:Class ;
+    rdfs:label "Requirement" ;
+    rdfs:comment "A requirement derived from policy or operating constraints." .
+
+:Decision a owl:Class ;
+    rdfs:label "Decision" ;
+    rdfs:comment "A decision made in response to requirements and constraints." .
+
+:Validation a owl:Class ;
+    rdfs:label "Validation" ;
+    rdfs:comment "A validation procedure, rule, or test used to evaluate a decision or artifact." ;
+    rdfs:subClassOf prov:Activity .
+
+:Evidence a owl:Class ;
+    rdfs:label "Evidence" ;
+    rdfs:comment "An evidentiary artifact produced by validation or operational observation." ;
+    rdfs:subClassOf prov:Entity .
+
+:Metric a owl:Class ;
+    rdfs:label "Metric" ;
+    rdfs:comment "A measurable signal updated by evidence." .
+
+:ChangeLog a owl:Class ;
+    rdfs:label "Change Log" ;
+    rdfs:comment "A traceable change record tied to decisions, evidence, and outcomes." .
+
+:Outcome a owl:Class ;
+    rdfs:label "Outcome" ;
+    rdfs:comment "The observed result or state after decision execution and change." .
+
+:TrustedSkill a owl:Class ;
+    rdfs:label "Trusted Skill" ;
+    rdfs:comment "A trusted reusable workflow source that contributes validated operational patterns." .
+
+:Workflow a owl:Class ;
+    rdfs:label "Workflow" ;
+    rdfs:comment "An operational workflow that governs how evidence is gathered and interpreted." ;
+    rdfs:subClassOf prov:Activity .
+
+:PreflightCheck a owl:Class ;
+    rdfs:label "Preflight Check" ;
+    rdfs:comment "A gating check that must run before downstream operations." ;
+    rdfs:subClassOf :Validation .
+
+:Classification a owl:Class ;
+    rdfs:label "Classification" ;
+    rdfs:comment "An authoritative state classification produced by preflight." .
+
+:ReportArtifact a owl:Class ;
+    rdfs:label "Report Artifact" ;
+    rdfs:comment "A persisted report or prior-run artifact used for delta comparison." ;
+    rdfs:subClassOf :Evidence .
+
+:RecoveredArtifact a owl:Class ;
+    rdfs:label "Recovered Artifact" ;
+    rdfs:comment "A recovered precursor artifact represented as first-class provenance-backed evidence." ;
+    rdfs:subClassOf :Evidence .
+
+:ArtifactCluster a owl:Class ;
+    rdfs:label "Artifact Cluster" ;
+    rdfs:comment "A historically meaningful cluster of related recovered artifacts." .
+
+:RepositoryRoot a owl:Class ;
+    rdfs:label "Repository Root" ;
+    rdfs:comment "A source repository root used in archaeology and lineage reconstruction." .
+
+:BranchLineage a owl:Class ;
+    rdfs:label "Branch Lineage" ;
+    rdfs:comment "A branch or commit-line used to describe a coherent line of work." .
+
+:RecoveredRole a owl:Class ;
+    rdfs:label "Recovered Role" ;
+    rdfs:comment "The role played by a recovered artifact in the reconstructed system." .
+
+:drives a owl:ObjectProperty ;
+    rdfs:label "drives" ;
+    rdfs:domain :Policy ;
+    rdfs:range :Requirement ;
+    rdfs:comment "Links policy to the requirements it drives." .
+
+:influences a owl:ObjectProperty ;
+    rdfs:label "influences" ;
+    rdfs:domain :Requirement ;
+    rdfs:range :Decision ;
+    rdfs:comment "Links a requirement to the decision it influences." .
+
+:validatedBy a owl:ObjectProperty ;
+    rdfs:label "validated by" ;
+    rdfs:domain :Decision ;
+    rdfs:range :Validation ;
+    rdfs:comment "Links a decision to a validation mechanism." .
+
+:produces a owl:ObjectProperty ;
+    rdfs:label "produces" ;
+    rdfs:domain :Validation ;
+    rdfs:range :Evidence ;
+    rdfs:comment "Links validation to the evidence it produces." ;
+    rdfs:subPropertyOf prov:generated .
+
+:updates a owl:ObjectProperty ;
+    rdfs:label "updates" ;
+    rdfs:domain :Evidence ;
+    rdfs:range :Metric ;
+    rdfs:comment "Links evidence to the metric it updates." .
+
+:informs a owl:ObjectProperty ;
+    rdfs:label "informs" ;
+    rdfs:domain :Metric ;
+    rdfs:range :ChangeLog ;
+    rdfs:comment "Links a metric to the change record it informs." .
+
+:impacts a owl:ObjectProperty ;
+    rdfs:label "impacts" ;
+    rdfs:domain :ChangeLog ;
+    rdfs:range :Outcome ;
+    rdfs:comment "Links a change record to the resulting outcome." .
+
+:contributesPattern a owl:ObjectProperty ;
+    rdfs:label "contributes pattern" ;
+    rdfs:domain :TrustedSkill ;
+    rdfs:range :Workflow ;
+    rdfs:comment "Links a trusted skill to a reusable workflow pattern." .
+
+:usesPreflight a owl:ObjectProperty ;
+    rdfs:label "uses preflight" ;
+    rdfs:domain :Workflow ;
+    rdfs:range :PreflightCheck ;
+    rdfs:comment "Links a workflow to its authoritative preflight check." .
+
+:classifiesState a owl:ObjectProperty ;
+    rdfs:label "classifies state" ;
+    rdfs:domain :PreflightCheck ;
+    rdfs:range :Classification ;
+    rdfs:comment "Links preflight to the classification it produces." .
+
+:gatesExecution a owl:ObjectProperty ;
+    rdfs:label "gates execution" ;
+    rdfs:domain :Classification ;
+    rdfs:range :Decision ;
+    rdfs:comment "Links classification to the decision or action it permits or blocks." .
+
+:comparesAgainst a owl:ObjectProperty ;
+    rdfs:label "compares against" ;
+    rdfs:domain :Workflow ;
+    rdfs:range :ReportArtifact ;
+    rdfs:comment "Links a workflow to prior artifacts used for delta comparison." .
+
+:sourcedFromRepository a owl:ObjectProperty ;
+    rdfs:label "sourced from repository" ;
+    rdfs:domain :RecoveredArtifact ;
+    rdfs:range :RepositoryRoot ;
+    rdfs:comment "Links a recovered artifact to its source repository root." .
+
+:appearsInBranch a owl:ObjectProperty ;
+    rdfs:label "appears in branch" ;
+    rdfs:domain :RecoveredArtifact ;
+    rdfs:range :BranchLineage ;
+    rdfs:comment "Links a recovered artifact to the lineage branch in which it appears." .
+
+:memberOfCluster a owl:ObjectProperty ;
+    rdfs:label "member of cluster" ;
+    rdfs:domain :RecoveredArtifact ;
+    rdfs:range :ArtifactCluster ;
+    rdfs:comment "Links a recovered artifact to a historically meaningful cluster." .
+
+:hasRecoveredRole a owl:ObjectProperty ;
+    rdfs:label "has recovered role" ;
+    rdfs:domain :RecoveredArtifact ;
+    rdfs:range :RecoveredRole ;
+    rdfs:comment "Links a recovered artifact to its interpreted role in the reconstructed system." .
+
+:supportsClaim a owl:ObjectProperty ;
+    rdfs:label "supports claim" ;
+    rdfs:domain :RecoveredArtifact ;
+    rdfs:range :Policy ;
+    rdfs:comment "Links a recovered artifact to the policy-level claim it supports." .
+
+:hasStatus a owl:DatatypeProperty ;
+    rdfs:label "has status" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Simple status marker for lifecycle tracking." .
+
+:hasConfidence a owl:DatatypeProperty ;
+    rdfs:label "has confidence" ;
+    rdfs:domain :Evidence ;
+    rdfs:range xsd:decimal ;
+    rdfs:comment "A confidence score assigned to evidence." .
+
+:hasValue a owl:DatatypeProperty ;
+    rdfs:label "has value" ;
+    rdfs:domain :Metric ;
+    rdfs:range xsd:decimal ;
+    rdfs:comment "The numeric value of a metric." .
+
+:changeDescription a owl:DatatypeProperty ;
+    rdfs:label "change description" ;
+    rdfs:domain :ChangeLog ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Human-readable summary of the change." .
+
+:classificationCode a owl:DatatypeProperty ;
+    rdfs:label "classification code" ;
+    rdfs:domain :Classification ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Stable classification code such as OK or AUTH_INVALID." .
+
+:repoPath a owl:DatatypeProperty ;
+    rdfs:label "repo path" ;
+    rdfs:domain :RepositoryRoot ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Absolute local filesystem path to the repository root used during archaeology." .
+
+:repoRemote a owl:DatatypeProperty ;
+    rdfs:label "repo remote" ;
+    rdfs:domain :RepositoryRoot ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Remote URL identifying the repository origin." .
+
+:branchName a owl:DatatypeProperty ;
+    rdfs:label "branch name" ;
+    rdfs:domain :BranchLineage ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Branch or lineage name used to identify a coherent line of work." .
+
+:commitHash a owl:DatatypeProperty ;
+    rdfs:label "commit hash" ;
+    rdfs:domain :RecoveredArtifact ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Commit hash anchoring the recovered artifact." .
+
+:sourceFilePath a owl:DatatypeProperty ;
+    rdfs:label "source file path" ;
+    rdfs:domain :RecoveredArtifact ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Repository-relative file path for the recovered artifact." .
+
+:recoveredSummary a owl:DatatypeProperty ;
+    rdfs:label "recovered summary" ;
+    rdfs:domain :RecoveredArtifact ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Short archaeology summary describing why the artifact matters." .
+
+:rootPolicy a :Policy ;
+    rdfs:label "Structure First Policy" ;
+    rdfs:comment "Core policy asserting that structure, validation, and traceability are primary control mechanisms." ;
+    :hasStatus "draft" .
+
+:rootRequirement a :Requirement ;
+    rdfs:label "Decision Assurance Requirement" ;
+    rdfs:comment "Requirement that decisions be made traceable and validation-backed." ;
+    :hasStatus "draft" .
+
+:rootDecision a :Decision ;
+    rdfs:label "Adopt Decision Assurance Core" ;
+    rdfs:comment "Example decision to unify precursor artifacts into a single decision assurance model." ;
+    :hasStatus "draft" .
+
+:rootValidation a :Validation ;
+    rdfs:label "Decision Core Validation" ;
+    rdfs:comment "Validation that checks whether the decision assurance chain is complete." ;
+    :hasStatus "draft" .
+
+:rootEvidence a :Evidence ;
+    rdfs:label "Decision Core Evidence" ;
+    rdfs:comment "Example evidence emitted by decision-core validation." ;
+    :hasConfidence "0.80"^^xsd:decimal ;
+    :hasStatus "draft" .
+
+:rootMetric a :Metric ;
+    rdfs:label "Decision Coverage Metric" ;
+    rdfs:comment "Metric reflecting confidence that the decision chain is complete." ;
+    :hasValue "0.95"^^xsd:decimal ;
+    :hasStatus "draft" .
+
+:rootChangeLog a :ChangeLog ;
+    rdfs:label "Initial Decision Core Change Log" ;
+    rdfs:comment "Change record for the initial decision-core package implementation." ;
+    :changeDescription "Initial decision assurance package split into core, evidence, and workflow layers." ;
+    :hasStatus "draft" .
+
+:rootOutcome a :Outcome ;
+    rdfs:label "Decision Core Outcome" ;
+    rdfs:comment "Outcome representing a usable provenance-backed ontology package." ;
+    :hasStatus "draft" .
+
+:rootPolicy :drives :rootRequirement .
+:rootRequirement :influences :rootDecision .
+:rootDecision :validatedBy :rootValidation .
+:rootValidation :produces :rootEvidence .
+:rootEvidence :updates :rootMetric .
+:rootMetric :informs :rootChangeLog .
+:rootChangeLog :impacts :rootOutcome .

@@ -1,0 +1,53 @@
+name: decision-core-validate
+
+on:
+  push:
+    paths:
+      - "models/decision-core/**"
+      - "docs/decision-core/**"
+      - ".github/workflows/decision-core-validate.yml"
+  pull_request:
+    paths:
+      - "models/decision-core/**"
+      - "docs/decision-core/**"
+      - ".github/workflows/decision-core-validate.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install validator dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r models/decision-core/requirements-decision-core.txt
+
+      - name: Positive validation
+        run: python models/decision-core/validate_decision_core.py
+
+      - name: Negative decision fixture
+        run: |
+          ! python models/decision-core/validate_decision_core.py models/decision-core/negative-decision-no-validation.ttl
+
+      - name: Negative evidence fixture
+        run: |
+          ! python models/decision-core/validate_decision_core.py models/decision-core/negative-evidence-missing-confidence.ttl
+
+      - name: Negative workflow fixture
+        run: |
+          ! python models/decision-core/validate_decision_core.py models/decision-core/negative-workflow-no-preflight.ttl
+
+      - name: Negative classification fixture
+        run: |
+          ! python models/decision-core/validate_decision_core.py models/decision-core/negative-classification-no-code.ttl
+
+      - name: Negative recovered artifact fixture
+        run: |
+          ! python models/decision-core/validate_decision_core.py models/decision-core/negative-recovered-artifact-missing-file.ttl

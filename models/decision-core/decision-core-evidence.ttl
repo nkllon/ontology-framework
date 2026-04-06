@@ -1,0 +1,193 @@
+@prefix : <https://example.com/decision-core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+:DecisionCoreEvidenceOntology a owl:Ontology ;
+    rdfs:label "Decision Core Evidence Ontology" ;
+    rdfs:comment "Recovered artifact instances and provenance anchors for decision assurance lineage." ;
+    owl:versionInfo "0.2.0" ;
+    dct:created "2026-04-06"^^xsd:date ;
+    dct:description "Encodes recovered precursor artifacts, branches, clusters, and repository roots as first-class evidence." ;
+    owl:imports <./decision-core-core.ttl> .
+
+:ontologyFrameworkRepo a :RepositoryRoot ;
+    rdfs:label "Ontology Framework Repository" ;
+    :repoPath "/Volumes/lemon/gemini/ontology-framework" ;
+    :repoRemote "git@github.com:louspringer/ontology-framework.git" .
+
+:aprilProtoCoreCluster a :ArtifactCluster ;
+    rdfs:label "April 2025 Proto-Core Cluster" ;
+    rdfs:comment "Canonical cluster where validation, maintenance, checkin, and traceability became explicit model objects." .
+
+:julyAlternativesCluster a :ArtifactCluster ;
+    rdfs:label "July 2025 Alternatives Cluster" ;
+    rdfs:comment "Cluster where modeling alternatives and anti-brute-force performance discipline were made explicit." .
+
+:mainLineage a :BranchLineage ;
+    rdfs:label "Main Lineage" ;
+    :branchName "main" .
+
+:alternativesBranch a :BranchLineage ;
+    rdfs:label "Alternatives Branch" ;
+    :branchName "origin/cursor/evaluate-modeling-alternatives-to-ontologies-1411" .
+
+:seedRole a :RecoveredRole ;
+    rdfs:label "Seed Ontology" .
+
+:processRole a :RecoveredRole ;
+    rdfs:label "Process Doctrine" .
+
+:validationRole a :RecoveredRole ;
+    rdfs:label "Validation Core" .
+
+:governanceRole a :RecoveredRole ;
+    rdfs:label "Governance Kernel" .
+
+:workflowRole a :RecoveredRole ;
+    rdfs:label "Workflow Model" .
+
+:sessionRole a :RecoveredRole ;
+    rdfs:label "Session State Model" .
+
+:antiScaleRole a :RecoveredRole ;
+    rdfs:label "Anti-Brute-Force Analysis" .
+
+:protoCoreLineageMetric a :Metric ;
+    rdfs:label "Proto-Core Lineage Metric" ;
+    rdfs:comment "Metric capturing how strongly the recovered April 2025 cluster supports the decision-assurance lineage." ;
+    :hasValue "0.93"^^xsd:decimal ;
+    :hasStatus "draft" .
+
+:antiScaleLineageMetric a :Metric ;
+    rdfs:label "Anti-Scale Lineage Metric" ;
+    rdfs:comment "Metric capturing how strongly the July alternatives branch supports the targeted-augmentation stance." ;
+    :hasValue "0.95"^^xsd:decimal ;
+    :hasStatus "draft" .
+
+:protoCoreChangeLog a :ChangeLog ;
+    rdfs:label "Proto-Core Lineage Change Log" ;
+    rdfs:comment "Change record summarizing the reconstructed April 2025 proto-core lineage." ;
+    :changeDescription "Recovered April 2025 artifacts establish validation, workflow, governance, and session modeling as one precursor cluster." ;
+    :hasStatus "draft" .
+
+:antiScaleChangeLog a :ChangeLog ;
+    rdfs:label "Anti-Scale Lineage Change Log" ;
+    rdfs:comment "Change record summarizing the July alternatives branch lineage." ;
+    :changeDescription "Recovered July 2025 alternatives analysis rejects indiscriminate scaling and favors targeted augmentation." ;
+    :hasStatus "draft" .
+
+:protoCoreOutcome a :Outcome ;
+    rdfs:label "Proto-Core Lineage Outcome" ;
+    rdfs:comment "Outcome establishing the April 2025 cluster as the canonical proto-core evidence set." ;
+    :hasStatus "draft" .
+
+:antiScaleOutcome a :Outcome ;
+    rdfs:label "Anti-Scale Lineage Outcome" ;
+    rdfs:comment "Outcome establishing the July alternatives branch as evidence for the anti-brute-force stance." ;
+    :hasStatus "draft" .
+
+:oracleDiscoveryArtifact a :RecoveredArtifact ;
+    rdfs:label "oracle-oci-discovery-ontology.ttl" ;
+    rdfs:comment "Earliest concrete domain seed showing Oracle/OCI knowledge modeled structurally instead of procedurally." ;
+    :commitHash "dcbcf5b" ;
+    :sourceFilePath "oracle-oci-discovery-ontology.ttl" ;
+    :recoveredSummary "Earliest domain ontology seed for Oracle/OCI learning paths and services." ;
+    :hasConfidence "0.82"^^xsd:decimal ;
+    :sourcedFromRepository :ontologyFrameworkRepo ;
+    :appearsInBranch :mainLineage ;
+    :memberOfCluster :aprilProtoCoreCluster ;
+    :hasRecoveredRole :seedRole ;
+    :supportsClaim :rootPolicy ;
+    :updates :protoCoreLineageMetric .
+
+:ontologistPromptArtifact a :RecoveredArtifact ;
+    rdfs:label "ontologist.prompt" ;
+    rdfs:comment "Early process artifact forcing ontology-first work and validation-ready structure." ;
+    :commitHash "a8cb13a" ;
+    :sourceFilePath "ontologist.prompt" ;
+    :recoveredSummary "Process rule requiring ontology, extensibility, and validation in every session." ;
+    :hasConfidence "0.92"^^xsd:decimal ;
+    :sourcedFromRepository :ontologyFrameworkRepo ;
+    :appearsInBranch :mainLineage ;
+    :memberOfCluster :aprilProtoCoreCluster ;
+    :hasRecoveredRole :processRole ;
+    :supportsClaim :rootPolicy ;
+    :updates :protoCoreLineageMetric .
+
+:validationModuleArtifact a :RecoveredArtifact ;
+    rdfs:label "guidance/modules/validation.ttl" ;
+    rdfs:comment "Validation module where policy, requirement, decision, and test coverage become part of the model." ;
+    :commitHash "986c076" ;
+    :sourceFilePath "guidance/modules/validation.ttl" ;
+    :recoveredSummary "Validation and policy-to-decision traceability move into ontology form." ;
+    :hasConfidence "0.90"^^xsd:decimal ;
+    :sourcedFromRepository :ontologyFrameworkRepo ;
+    :appearsInBranch :mainLineage ;
+    :memberOfCluster :aprilProtoCoreCluster ;
+    :hasRecoveredRole :validationRole ;
+    :supportsClaim :rootPolicy ;
+    :updates :protoCoreLineageMetric .
+
+:issuePlanningArtifact a :RecoveredArtifact ;
+    rdfs:label "issue_planning_process.md" ;
+    rdfs:comment "Workflow model for issue inventory, ontology mapping, TTL plans, dependency graphs, and auditable validation." ;
+    :commitHash "359b27c" ;
+    :sourceFilePath "issue_planning_process.md" ;
+    :recoveredSummary "Makes validation, traceability, and priority rationale explicit in issue planning." ;
+    :hasConfidence "0.88"^^xsd:decimal ;
+    :sourcedFromRepository :ontologyFrameworkRepo ;
+    :appearsInBranch :mainLineage ;
+    :memberOfCluster :aprilProtoCoreCluster ;
+    :hasRecoveredRole :workflowRole ;
+    :supportsClaim :rootPolicy ;
+    :updates :protoCoreLineageMetric .
+
+:maintenanceArtifact a :RecoveredArtifact ;
+    rdfs:label "models/project_maintenance.ttl" ;
+    rdfs:comment "Compact governance kernel tying validation rules, metrics, change logs, and artifacts together." ;
+    :commitHash "11498a0" ;
+    :sourceFilePath "models/project_maintenance.ttl" ;
+    :recoveredSummary "Governance kernel with validation rule, metric, change log, and artifact linkage." ;
+    :hasConfidence "0.86"^^xsd:decimal ;
+    :sourcedFromRepository :ontologyFrameworkRepo ;
+    :appearsInBranch :mainLineage ;
+    :memberOfCluster :aprilProtoCoreCluster ;
+    :hasRecoveredRole :governanceRole ;
+    :supportsClaim :rootPolicy ;
+    :updates :protoCoreLineageMetric .
+
+:sessionArtifact a :RecoveredArtifact ;
+    rdfs:label "session.ttl" ;
+    rdfs:comment "Early attempt to turn session state and tasks into ontology-backed work tracking." ;
+    :commitHash "b274928" ;
+    :sourceFilePath "session.ttl" ;
+    :recoveredSummary "Session and task state represented as RDF instead of loose notes." ;
+    :hasConfidence "0.79"^^xsd:decimal ;
+    :sourcedFromRepository :ontologyFrameworkRepo ;
+    :appearsInBranch :mainLineage ;
+    :memberOfCluster :aprilProtoCoreCluster ;
+    :hasRecoveredRole :sessionRole ;
+    :supportsClaim :rootPolicy ;
+    :updates :protoCoreLineageMetric .
+
+:propertyGraphAssessmentArtifact a :RecoveredArtifact ;
+    rdfs:label "property_graph_confidence_assessment.md" ;
+    rdfs:comment "Anti-hype analysis rejecting inflated performance claims and recommending targeted hybrid augmentation only where needed." ;
+    :commitHash "4ef9640" ;
+    :sourceFilePath "property_graph_confidence_assessment.md" ;
+    :recoveredSummary "Current structured system is already fast; only targeted hybrid layering is justified." ;
+    :hasConfidence "0.95"^^xsd:decimal ;
+    :sourcedFromRepository :ontologyFrameworkRepo ;
+    :appearsInBranch :alternativesBranch ;
+    :memberOfCluster :julyAlternativesCluster ;
+    :hasRecoveredRole :antiScaleRole ;
+    :supportsClaim :rootPolicy ;
+    :updates :antiScaleLineageMetric .
+
+:protoCoreLineageMetric :informs :protoCoreChangeLog .
+:antiScaleLineageMetric :informs :antiScaleChangeLog .
+
+:protoCoreChangeLog :impacts :protoCoreOutcome .
+:antiScaleChangeLog :impacts :antiScaleOutcome .

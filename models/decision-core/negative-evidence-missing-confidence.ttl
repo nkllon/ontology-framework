@@ -1,0 +1,6 @@
+@prefix : <https://example.com/decision-core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:brokenEvidence a :Evidence ;
+    rdfs:label "Broken Evidence Missing Confidence" ;
+    :updates :rootMetric .

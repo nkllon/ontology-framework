@@ -1,0 +1,15 @@
+@prefix : <https://example.com/decision-core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+:DecisionCorePackage a owl:Ontology ;
+    rdfs:label "Decision Assurance Core Package" ;
+    rdfs:comment "Aggregate ontology package for the decision assurance core, evidence lineage, and trusted workflow patterns." ;
+    owl:versionInfo "0.2.0" ;
+    dct:created "2026-04-06"^^xsd:date ;
+    dct:description "Top-level ontology package that imports the core model, recovered evidence set, and trusted workflow patterns." ;
+    owl:imports <./decision-core-core.ttl>,
+        <./decision-core-evidence.ttl>,
+        <./decision-core-workflows.ttl> .

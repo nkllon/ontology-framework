@@ -1,0 +1,168 @@
+@prefix : <https://example.com/decision-core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+:DecisionCoreWorkflowOntology a owl:Ontology ;
+    rdfs:label "Decision Core Workflow Ontology" ;
+    rdfs:comment "Trusted skill patterns represented as reusable operational workflows." ;
+    owl:versionInfo "0.2.0" ;
+    dct:created "2026-04-06"^^xsd:date ;
+    dct:description "Encodes trusted operational doctrine from local skill files into reusable workflow instances." ;
+    owl:imports <./decision-core-core.ttl> .
+
+:eudorusSkill a :TrustedSkill ;
+    rdfs:label "Eudorus Control Tower Skill" ;
+    rdfs:comment "Trusted skill contributing preflight-authoritative control-tower workflow rules." ;
+    :hasStatus "trusted" .
+
+:dailyOpsSkill a :TrustedSkill ;
+    rdfs:label "Daily Ops Story Report Skill" ;
+    rdfs:comment "Trusted skill contributing evidence-first reporting and ontology-plus-SHACL output discipline." ;
+    :hasStatus "trusted" .
+
+:controlTowerWorkflow a :Workflow ;
+    rdfs:label "Control Tower Workflow" ;
+    rdfs:comment "Workflow that requires authoritative preflight, classification-gated execution, and prior report comparison." ;
+    :hasStatus "draft" .
+
+:dailyOpsWorkflow a :Workflow ;
+    rdfs:label "Daily Ops Workflow" ;
+    rdfs:comment "Workflow that requires evidence gathering before conclusions and favors causal story construction over changelog narration." ;
+    :hasStatus "draft" .
+
+:githubPreflight a :PreflightCheck ;
+    rdfs:label "GitHub Preflight" ;
+    rdfs:comment "Authoritative preflight that determines whether live GitHub state may be queried." ;
+    :hasStatus "draft" .
+
+:evidenceGatheringCheck a :PreflightCheck ;
+    rdfs:label "Evidence Gathering Check" ;
+    rdfs:comment "Operational gate asserting that evidence must be gathered before narrative conclusions are written." ;
+    :hasStatus "draft" .
+
+:classificationOK a :Classification ;
+    rdfs:label "OK Classification" ;
+    rdfs:comment "Classification permitting downstream live fetch and analysis." ;
+    :classificationCode "OK" ;
+    :hasStatus "draft" .
+
+:classificationEvidenceReady a :Classification ;
+    rdfs:label "Evidence Ready Classification" ;
+    rdfs:comment "Classification permitting narrative synthesis because evidence has been gathered." ;
+    :classificationCode "EVIDENCE_READY" ;
+    :hasStatus "draft" .
+
+:priorReport a :ReportArtifact ;
+    rdfs:label "Prior Report Artifact" ;
+    rdfs:comment "Previous run artifact used as the comparison anchor for deltas." ;
+    :hasConfidence "1.00"^^xsd:decimal ;
+    :hasStatus "draft" .
+
+:currentOpsEvidenceArtifact a :ReportArtifact ;
+    rdfs:label "Current Ops Evidence Artifact" ;
+    rdfs:comment "Current operational evidence bundle used before story synthesis." ;
+    :hasConfidence "0.90"^^xsd:decimal ;
+    :hasStatus "draft" .
+
+:controlTowerDecision a :Decision ;
+    rdfs:label "Run Live GitHub Fetch" ;
+    rdfs:comment "Decision to fetch live GitHub state only after preflight classification allows it." ;
+    :hasStatus "draft" .
+
+:storySynthesisDecision a :Decision ;
+    rdfs:label "Write Story Synthesis" ;
+    rdfs:comment "Decision to synthesize an operational story only after evidence is gathered." ;
+    :hasStatus "draft" .
+
+:controlTowerValidation a :Validation ;
+    rdfs:label "Control Tower Validation" ;
+    rdfs:comment "Validation proving the control-tower decision was reached through authoritative preflight and comparison against prior reports." ;
+    :hasStatus "draft" .
+
+:storySynthesisValidation a :Validation ;
+    rdfs:label "Story Synthesis Validation" ;
+    rdfs:comment "Validation proving the narrative decision was made only after evidence gathering and comparison against current artifacts." ;
+    :hasStatus "draft" .
+
+:controlTowerMetric a :Metric ;
+    rdfs:label "Control Tower Gate Metric" ;
+    rdfs:comment "Metric indicating whether control-tower execution remained gated by preflight." ;
+    :hasValue "0.97"^^xsd:decimal ;
+    :hasStatus "draft" .
+
+:storySynthesisMetric a :Metric ;
+    rdfs:label "Story Synthesis Gate Metric" ;
+    rdfs:comment "Metric indicating whether story synthesis remained evidence-first." ;
+    :hasValue "0.96"^^xsd:decimal ;
+    :hasStatus "draft" .
+
+:priorReportDeltaMetric a :Metric ;
+    rdfs:label "Prior Report Delta Metric" ;
+    rdfs:comment "Metric updated when the workflow compares the current state against the previous report." ;
+    :hasValue "0.91"^^xsd:decimal ;
+    :hasStatus "draft" .
+
+:currentOpsEvidenceMetric a :Metric ;
+    rdfs:label "Current Ops Evidence Metric" ;
+    rdfs:comment "Metric updated by the current operational evidence bundle before narrative synthesis." ;
+    :hasValue "0.94"^^xsd:decimal ;
+    :hasStatus "draft" .
+
+:controlTowerChangeLog a :ChangeLog ;
+    rdfs:label "Control Tower Workflow Change Log" ;
+    rdfs:comment "Change record for preflight-authoritative control-tower execution." ;
+    :changeDescription "Control tower workflow requires GitHub preflight classification, decision validation, and prior report comparison." ;
+    :hasStatus "draft" .
+
+:storySynthesisChangeLog a :ChangeLog ;
+    rdfs:label "Story Synthesis Workflow Change Log" ;
+    rdfs:comment "Change record for evidence-first narrative synthesis." ;
+    :changeDescription "Story synthesis workflow requires evidence gathering classification, validated decision, and artifact-backed comparison." ;
+    :hasStatus "draft" .
+
+:controlTowerOutcome a :Outcome ;
+    rdfs:label "Control Tower Governed Outcome" ;
+    rdfs:comment "Outcome showing that live repo-state fetches remain governed by preflight." ;
+    :hasStatus "draft" .
+
+:storySynthesisOutcome a :Outcome ;
+    rdfs:label "Story Synthesis Governed Outcome" ;
+    rdfs:comment "Outcome showing that narrative reports remain anchored in collected evidence." ;
+    :hasStatus "draft" .
+
+:eudorusSkill :contributesPattern :controlTowerWorkflow .
+:dailyOpsSkill :contributesPattern :dailyOpsWorkflow .
+
+:controlTowerWorkflow :usesPreflight :githubPreflight ;
+    :comparesAgainst :priorReport .
+
+:dailyOpsWorkflow :usesPreflight :evidenceGatheringCheck ;
+    :comparesAgainst :currentOpsEvidenceArtifact .
+
+:githubPreflight :classifiesState :classificationOK ;
+    :produces :priorReport .
+
+:evidenceGatheringCheck :classifiesState :classificationEvidenceReady ;
+    :produces :currentOpsEvidenceArtifact .
+
+:classificationOK :gatesExecution :controlTowerDecision .
+:classificationEvidenceReady :gatesExecution :storySynthesisDecision .
+
+:controlTowerDecision :validatedBy :controlTowerValidation .
+:storySynthesisDecision :validatedBy :storySynthesisValidation .
+
+:controlTowerValidation :produces :priorReport .
+:storySynthesisValidation :produces :currentOpsEvidenceArtifact .
+
+:priorReport :updates :priorReportDeltaMetric, :controlTowerMetric .
+:currentOpsEvidenceArtifact :updates :currentOpsEvidenceMetric, :storySynthesisMetric .
+
+:priorReportDeltaMetric :informs :controlTowerChangeLog .
+:controlTowerMetric :informs :controlTowerChangeLog .
+:currentOpsEvidenceMetric :informs :storySynthesisChangeLog .
+:storySynthesisMetric :informs :storySynthesisChangeLog .
+
+:controlTowerChangeLog :impacts :controlTowerOutcome .
+:storySynthesisChangeLog :impacts :storySynthesisOutcome .

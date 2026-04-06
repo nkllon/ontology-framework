@@ -23,6 +23,24 @@ A framework for managing and validating ontologies with support for both local a
 - SHACL validation support
 - Automated testing infrastructure
 
+## Decision Core Package
+
+This repository now includes a standalone decision-assurance package under:
+
+- `models/decision-core`
+
+Companion documentation for the package lives under:
+
+- `docs/decision-core`
+
+The package consolidates the recovered precursor lineage into a provenance-backed
+ontology with SHACL validation, recovered evidence instances, and trusted
+workflow patterns. Run the local validator with:
+
+```bash
+python models/decision-core/validate_decision_core.py
+```
+
 ## Requirements
 
 ### Python Dependencies

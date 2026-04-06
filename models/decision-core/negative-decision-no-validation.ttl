@@ -1,0 +1,5 @@
+@prefix : <https://example.com/decision-core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:brokenDecision a :Decision ;
+    rdfs:label "Broken Decision Without Validation" .

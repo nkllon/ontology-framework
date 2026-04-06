@@ -1,0 +1,226 @@
+@prefix : <https://example.com/decision-core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:DecisionCoreShapesOntology a owl:Ontology ;
+    rdfs:label "Decision Core SHACL Shapes" ;
+    rdfs:comment "SHACL validation layer for conceptual integrity, provenance completeness, and workflow discipline." ;
+    owl:versionInfo "0.2.0" .
+
+:PolicyShape a sh:NodeShape ;
+    sh:targetClass :Policy ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Policy must have a label."
+    ] ;
+    sh:property [
+        sh:path :drives ;
+        sh:minCount 1 ;
+        sh:class :Requirement ;
+        sh:message "Policy must drive at least one Requirement."
+    ] .
+
+:RequirementShape a sh:NodeShape ;
+    sh:targetClass :Requirement ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Requirement must have a label."
+    ] ;
+    sh:property [
+        sh:path :influences ;
+        sh:minCount 1 ;
+        sh:class :Decision ;
+        sh:message "Requirement must influence at least one Decision."
+    ] .
+
+:DecisionShape a sh:NodeShape ;
+    sh:targetClass :Decision ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Decision must have a label."
+    ] ;
+    sh:property [
+        sh:path :validatedBy ;
+        sh:minCount 1 ;
+        sh:class :Validation ;
+        sh:message "Decision must be linked to at least one Validation."
+    ] .
+
+:ValidationShape a sh:NodeShape ;
+    sh:targetClass :Validation ;
+    sh:property [
+        sh:path :produces ;
+        sh:minCount 1 ;
+        sh:class :Evidence ;
+        sh:message "Validation must produce at least one Evidence artifact."
+    ] .
+
+:EvidenceShape a sh:NodeShape ;
+    sh:targetClass :Evidence ;
+    sh:property [
+        sh:path :hasConfidence ;
+        sh:minCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 1 ;
+        sh:message "Evidence confidence must be a decimal between 0 and 1."
+    ] ;
+    sh:property [
+        sh:path :updates ;
+        sh:minCount 1 ;
+        sh:class :Metric ;
+        sh:message "Evidence must update at least one Metric."
+    ] .
+
+:MetricShape a sh:NodeShape ;
+    sh:targetClass :Metric ;
+    sh:property [
+        sh:path :hasValue ;
+        sh:minCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:message "Metric must have a decimal value."
+    ] ;
+    sh:property [
+        sh:path :informs ;
+        sh:minCount 1 ;
+        sh:class :ChangeLog ;
+        sh:message "Metric must inform at least one ChangeLog."
+    ] .
+
+:ChangeLogShape a sh:NodeShape ;
+    sh:targetClass :ChangeLog ;
+    sh:property [
+        sh:path :changeDescription ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "ChangeLog must have a change description."
+    ] ;
+    sh:property [
+        sh:path :impacts ;
+        sh:minCount 1 ;
+        sh:class :Outcome ;
+        sh:message "ChangeLog must impact at least one Outcome."
+    ] .
+
+:OutcomeShape a sh:NodeShape ;
+    sh:targetClass :Outcome ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Outcome must have a label."
+    ] .
+
+:TrustedSkillShape a sh:NodeShape ;
+    sh:targetClass :TrustedSkill ;
+    sh:property [
+        sh:path :contributesPattern ;
+        sh:minCount 1 ;
+        sh:class :Workflow ;
+        sh:message "TrustedSkill must contribute at least one Workflow pattern."
+    ] .
+
+:WorkflowShape a sh:NodeShape ;
+    sh:targetClass :Workflow ;
+    sh:property [
+        sh:path :usesPreflight ;
+        sh:minCount 1 ;
+        sh:class :PreflightCheck ;
+        sh:message "Workflow must use at least one PreflightCheck."
+    ] ;
+    sh:property [
+        sh:path :comparesAgainst ;
+        sh:minCount 1 ;
+        sh:class :ReportArtifact ;
+        sh:message "Workflow must compare against at least one ReportArtifact."
+    ] .
+
+:PreflightCheckShape a sh:NodeShape ;
+    sh:targetClass :PreflightCheck ;
+    sh:property [
+        sh:path :classifiesState ;
+        sh:minCount 1 ;
+        sh:class :Classification ;
+        sh:message "PreflightCheck must produce at least one Classification."
+    ] .
+
+:ClassificationShape a sh:NodeShape ;
+    sh:targetClass :Classification ;
+    sh:property [
+        sh:path :classificationCode ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Classification must have a stable classificationCode."
+    ] ;
+    sh:property [
+        sh:path :gatesExecution ;
+        sh:minCount 1 ;
+        sh:class :Decision ;
+        sh:message "Classification must gate at least one Decision."
+    ] .
+
+:RecoveredArtifactShape a sh:NodeShape ;
+    sh:targetClass :RecoveredArtifact ;
+    sh:property [
+        sh:path :commitHash ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "RecoveredArtifact must have a commitHash."
+    ] ;
+    sh:property [
+        sh:path :sourceFilePath ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "RecoveredArtifact must have a sourceFilePath."
+    ] ;
+    sh:property [
+        sh:path :sourcedFromRepository ;
+        sh:minCount 1 ;
+        sh:class :RepositoryRoot ;
+        sh:message "RecoveredArtifact must link to a RepositoryRoot."
+    ] ;
+    sh:property [
+        sh:path :appearsInBranch ;
+        sh:minCount 1 ;
+        sh:class :BranchLineage ;
+        sh:message "RecoveredArtifact must link to a BranchLineage."
+    ] ;
+    sh:property [
+        sh:path :hasRecoveredRole ;
+        sh:minCount 1 ;
+        sh:class :RecoveredRole ;
+        sh:message "RecoveredArtifact must have at least one RecoveredRole."
+    ] .
+
+:RepositoryRootShape a sh:NodeShape ;
+    sh:targetClass :RepositoryRoot ;
+    sh:property [
+        sh:path :repoPath ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "RepositoryRoot must have a repoPath."
+    ] ;
+    sh:property [
+        sh:path :repoRemote ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "RepositoryRoot must have a repoRemote."
+    ] .
+
+:BranchLineageShape a sh:NodeShape ;
+    sh:targetClass :BranchLineage ;
+    sh:property [
+        sh:path :branchName ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "BranchLineage must have a branchName."
+    ] .

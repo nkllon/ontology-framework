@@ -1,0 +1,12 @@
+@prefix : <https://example.com/decision-core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:brokenRecoveredArtifact a :RecoveredArtifact ;
+    rdfs:label "Broken Recovered Artifact Missing File" ;
+    :commitHash "deadbeef" ;
+    :hasConfidence "0.50"^^xsd:decimal ;
+    :sourcedFromRepository :ontologyFrameworkRepo ;
+    :appearsInBranch :mainLineage ;
+    :hasRecoveredRole :validationRole ;
+    :updates :protoCoreLineageMetric .
