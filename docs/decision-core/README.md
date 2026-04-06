@@ -10,6 +10,7 @@ Start with:
 - `decision-core-evidence.md`
 - `decision-core-namespace.md`
 - `oracle-discovery-adjacency-map.md`
+- `oracle-bridge.md`
 - `standards-alignment.md`
 - `validation-test-plan.md`
 

@@ -13,6 +13,8 @@ DATA_FILES = [
     BASE / "decision-core-core.ttl",
     BASE / "decision-core-evidence.ttl",
     BASE / "decision-core-workflows.ttl",
+    BASE / "oracle-discovery-adjacency-map.ttl",
+    BASE / "oracle-bridge.ttl",
 ]
 SHAPES_FILE = BASE / "decision-core.shacl.ttl"
 

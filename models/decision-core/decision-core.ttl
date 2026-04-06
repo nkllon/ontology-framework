@@ -12,4 +12,6 @@
     dct:description "Top-level ontology package that imports the core model, recovered evidence set, and trusted workflow patterns." ;
     owl:imports <./decision-core-core.ttl>,
         <./decision-core-evidence.ttl>,
-        <./decision-core-workflows.ttl> .
+        <./decision-core-workflows.ttl>,
+        <./oracle-discovery-adjacency-map.ttl>,
+        <./oracle-bridge.ttl> .
